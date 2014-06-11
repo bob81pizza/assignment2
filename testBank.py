@@ -40,6 +40,23 @@ class testBank(unittest.TestCase):
 		self.assertIsInstance(self.b.getAccount(1),BankAccount)
 
 
+
+
+
+	'''
+	USES MOCK
+	Test to ensure that getAccount can be duplicated. Get account, deposit money into it, set account = null,
+	get account again, and make sure the balance is the amount deposited.
+	'''
+
+
+
+
+
+
+
+
+
 	'''
 	USES MOCK
 	Tests to ensure that getNextAccountNumber method is called from within addAccount
