@@ -1,6 +1,6 @@
 import unittest
 from BankApplication import Bank, BankAccount, Transaction
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 class testBank(unittest.TestCase):
 
@@ -19,16 +19,25 @@ class testBank(unittest.TestCase):
 	'''
 	Test to ensure that b is an instance of Bank
 	'''
-	def testClass(self):
-		self.assertIsInstance(self.b,Bank)
+	def testClassType(self):
+		self.assertIsInstance(self.b, Bank)
 
 
 	'''
 	Test to ensure an exception is raised if you try to get 
 	an account that doesn't exist
 	'''
-	def testGetAccount(self):
+	def testGetAccountFailure(self):
 		self.assertRaises(Exception, self.b.getAccount,2)
+
+
+	'''
+	Test to ensure that after adding 1 account and then getting an account
+	with account # = 1, a BankAccount object is returned
+	'''
+	def testGetAccountClassType(self):
+		self.b.addAccount()
+		self.assertIsInstance(self.b.getAccount(1),BankAccount)
 
 
 	'''
@@ -43,7 +52,8 @@ class testBank(unittest.TestCase):
 		real.getNextAccountNumber.assert_called_with()
 
 
-	'''Test to ensure that adding 1 account makes the Bank have 1 account in its list
+	'''
+	Test to ensure that adding 1 account makes the Bank have 1 account in its list
 	of BankAccounts.
 	'''
 	def testAddFirstAccount(self):
@@ -51,7 +61,8 @@ class testBank(unittest.TestCase):
 		self.assertEqual(len(self.b.bankAccounts),1)
 
 
-	'''Test to ensure that adding 3 accounts in succession makes the Bank have 3 accounts
+	'''
+	Test to ensure that adding 3 accounts in succession makes the Bank have 3 accounts
 	in its list of BankAccounts
 	'''
 	def testAddThreeAccounts(self):
@@ -59,7 +70,49 @@ class testBank(unittest.TestCase):
 			self.b.addAccount()
 		self.assertEqual(len(self.b.bankAccounts),3)
 
-	
+
+	'''
+	USES MOCK
+	Test to ensure isvalidAccountNumber uses BankAccount.getAccountNumber correctly and
+	returns True if it is found
+	'''
+	def testIsValidAccountNumberMock(self):
+		with patch('BankApplication.BankAccount') as mock:
+			instance = mock.return_value
+			instance.getAccountNumber.return_value = 'result'
+			self.b.addAccount()
+			result = self.b.isValidAccountNumber('result')
+			self.assertTrue(result)
+
+
+	'''
+	USES MOCK
+	Test to ensure isValidAccountNumber uses BankAccount.getAccountNumber correctly and returns
+	False if it is not found
+	'''
+	def testNotValidAccountNumberMock(self):
+		with patch('BankApplication.BankAccount') as mock:
+			instance = mock.return_value
+			instance.getAccountNumber.return_value = 'result'
+			self.b.addAccount()
+			result = self.b.isValidAccountNumber('10')
+			self.assertFalse(result)
+
+
+	'''
+	Test to ensure getting the next account number with no accounts returns 1
+	'''
+	def testGetNextAccountNumberWithNoAccounts(self):
+		self.assertEqual(self.b.getNextAccountNumber(),1)
+
+
+	'''
+	Test to ensure getting the next account number after creating 2 accounts returns 3
+	'''
+	def testGetNextAccountNumberWithTwoAccounts(self):
+		self.b.addAccount()
+		self.b.addAccount()
+		self.assertEqual(self.b.getNextAccountNumber(),3)
 
 
 
