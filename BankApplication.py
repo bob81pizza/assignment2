@@ -10,6 +10,7 @@ class Bank():
     def addAccount(self):
         x = BankAccount(self.getNextAccountNumber())
         self.bankAccounts.append(x)
+        self.currentAccountNumber += 1
 
     def removeAccount(self, accountNumber):
         for x in self.bankAccounts:
@@ -17,8 +18,7 @@ class Bank():
                 self.bankAccounts.remove(x)
 
     def getNextAccountNumber(self):
-        self.currentAccountNumber += 1
-        return self.currentAccountNumber
+        return self.currentAccountNumber + 1
 
     def isValidAccountNumber(self, accountNum):
         for i in self.bankAccounts:
