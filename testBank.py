@@ -1,5 +1,6 @@
 import unittest
-from BankApplication import Bank, BankAccount
+from BankApplication import Bank, BankAccount, Transaction
+from unittest.mock import MagicMock
 
 class testBank(unittest.TestCase):
 	def setUp(self):
@@ -24,14 +25,18 @@ class testBank(unittest.TestCase):
 	def testGetAccount(self):
 		self.assertRaises(Exception, self.b.getAccount,2)
 
+	'''
+	USES MOCK
+	Tests to ensure that getNextAccountNumber method is called from within addAccount
 
-	def testDeposit(self):
-		self.b.addAccount()
-		a = self.b.getAccount(1)
-		try:
-			a.deposit(-1)
-		except:
-			a.printTransactions()
+	'''
+	def testMock(self):
+		real = Bank()
+		real.getNextAccountNumber = MagicMock()
+		real.addAccount()
+		real.getNextAccountNumber.assert_called_with()
+
+
 
 
 if __name__ == '__main__':

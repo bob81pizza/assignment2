@@ -1,6 +1,4 @@
 import datetime
-import unittest
-from unittest.mock import Mock
 
 class Bank():
 
@@ -34,12 +32,16 @@ class Bank():
                 if i.getAccountNumber() == accountNum:
                     return i
         else:
-            raise Exception("No Account Found")
-        
+            raise Exception("No Account Found")      
 
     def printAccounts(self):
         for i in self.bankAccounts:
             print("Account number:",i.getAccountNumber(), "Balance:",i.getBalance())
+
+    def emptyAllAccounts(self):
+        for i in self.bankAccounts:
+            if i.getBalance() > 0:
+                i.withdraw(i.getBalance())
 
     
 
