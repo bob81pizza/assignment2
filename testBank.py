@@ -40,27 +40,31 @@ class testBank(unittest.TestCase):
 		self.assertIsInstance(self.b.getAccount(1),BankAccount)
 
 
-
-
-
 	'''
 	USES MOCK
-	Test to ensure that getAccount can be duplicated. Get account, deposit money into it, set account = null,
+	Test to ensure that getAccount can be duplicated. Get account, deposit money into it, set account = None,
 	get account again, and make sure the balance is the amount deposited.
 	'''
+	def testGetAccountTwice(self):
+		with patch('BankApplication.BankAccount') as mock:
+			instance = mock.return_value
+			instance.getAccountNumber.return_value = 1
+			self.b.addAccount()
+			a = self.b.getAccount(1)
+			a.balance = 10
+			a = None
 
+			#Assert that a has been set to None
+			self.assertIsNone(a)
 
+			#Get the same account and assert the balance is still 10
+			a = self.b.getAccount(1)
+			self.assertEqual(a.balance,10)
 
-
-
-
-
-
-
+			
 	'''
 	USES MOCK
 	Tests to ensure that getNextAccountNumber method is called from within addAccount
-
 	'''
 	def testAddAccountUsingMock(self):
 		real = Bank()
@@ -132,6 +136,39 @@ class testBank(unittest.TestCase):
 		self.assertEqual(self.b.getNextAccountNumber(),3)
 
 
+	'''
+	Test to ensure that calling empytAllAccounts with only accounts with zero balances will have
+	the accounts still have zero balances
+	'''
+	def testEmptyAllAccountsZeroBalance(self):
+		self.b.addAccount()
+		self.b.addAccount()
+		self.b.addAccount()
+		for i in self.b.bankAccounts:
+			self.assertEqual(i.balance,0)
+
+
+	'''
+	Test to ensure that calling emptyAllAccounts with accounts that have balances, the ending balances
+	will all be zero
+	'''
+	def testEmptyAllAccountsNonZeroBalances(self):
+		self.b.addAccount()
+		self.b.addAccount()
+		self.b.addAccount()
+
+		for i in self.b.bankAccounts:
+			i.balance += 10
+
+		#Ensure balances are all 10
+		for i in self.b.bankAccounts:
+			self.assertEqual(i.balance,10)
+
+		self.b.emptyAllAccounts()
+
+		#Ensure all balances are 0
+		for i in self.b.bankAccounts:
+			self.assertEqual(i.balance,0)
 
 
 if __name__ == '__main__':
