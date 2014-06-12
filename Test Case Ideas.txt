@@ -1,0 +1,67 @@
+Bank Account Program Possible Tests:
+
+Bank()
+- addAccount
+	- normal
+	- non-numeric
+	- null
+- removeAccount
+	- normal
+	- last account
+	- no accounts
+	- non-numeric
+	- non-existent account
+- getNextNumber
+	- normal
+	- zero total accounts
+	- one account
+	- max accounts (?)
+- isValid
+	- normal - yes
+	- normal - no
+	- non-numeric
+- getAccount
+	- normal
+	- invalid account
+	- non-numeric
+- printAccounts
+	- normal
+	- zero accounts
+- emptyAllAccounts
+	- normal
+	- all accounts have $0
+	- one account has $0
+	- no accounts
+	
+BankAccount()
+- __init__
+	- normal
+	- non-numeric
+	- existing number
+- getAccountNumber
+- deposit
+	- normal
+	- negative
+	- decimal
+	- very large/very small
+- withdraw
+	- normal
+	- negative
+	- decimal
+	- very large/very small
+- getBalance
+- printTransactions
+	- normal
+	- no transactions
+
+Transaction()
+- __init__
+	- normal
+	- invalid transaction type
+	- negative amount
+	- non-numeric amount
+	- invalid date
+- __repr__
+	- withdrawal
+	- deposit
+	
