@@ -10,7 +10,7 @@ class testBank(unittest.TestCase):
 
 
 	'''
-	Test to ensure the instantiated b is not null
+	Test to ensure the instantiated Bank b is not null
 	'''
 	def testInit(self):
 		self.assertIsNotNone(self.b)
@@ -25,7 +25,8 @@ class testBank(unittest.TestCase):
 
 	'''
 	Test to ensure an exception is raised if you try to get 
-	an account that doesn't exist
+	an account that doesn't exist.
+	Try to get an account while the bank has no accounts
 	'''
 	def testGetAccountFailure(self):
 		self.assertRaises(Exception, self.b.getAccount,2)
@@ -41,9 +42,44 @@ class testBank(unittest.TestCase):
 
 
 	'''
+	Test removeAccount to ensure that when the bank has no accounts, removing one
+	will not throw an error and the bank will still have no accounts.
+	'''
+	def testRemoveNoAccounts(self):
+		#ensure account list is empty
+		self.assertEqual(len(self.b.bankAccounts),0)
+		self.b.removeAccount(1)
+		#ensure account list is still empty
+		self.assertEqual(len(self.b.bankAccounts),0)
+
+
+	'''
+	USES MOCK
+	Test removeAccount to ensure that when the bank has 1 account, after removing
+	the 1 account, the bank will have zero accounts. Uses mock to return the correct
+	account number
+	'''
+	def testRemoveOneAccount(self):
+		with patch('BankApplication.BankAccount') as mock:
+			instance = mock.return_value
+			instance.getAccountNumber.return_value = 1
+			self.b.addAccount()
+
+			#ensure account list's size is 1
+			self.assertEqual(len(self.b.bankAccounts),1)
+
+			#remove account
+			self.b.removeAccount(1)
+
+			#ensure account list's size is 0
+			self.assertEqual(len(self.b.bankAccounts),0)
+
+
+
+	'''
 	USES MOCK
 	Test to ensure that getAccount can be duplicated. Get account, deposit money into it, set account = None,
-	get account again, and make sure the balance is the amount deposited.
+	get account again, and make sure the balance is the amount deposited
 	'''
 	def testGetAccountTwice(self):
 		with patch('BankApplication.BankAccount') as mock:
@@ -64,7 +100,8 @@ class testBank(unittest.TestCase):
 			
 	'''
 	USES MOCK
-	Tests to ensure that getNextAccountNumber method is called from within addAccount
+	Tests to ensure that when addAccount is called,
+	getNextAccountNumber method is called from within addAccount
 	'''
 	def testAddAccountUsingMock(self):
 		real = Bank()
