@@ -97,7 +97,7 @@ class testBank(unittest.TestCase):
 			a = self.b.getAccount(1)
 			self.assertEqual(a.balance,10)
 
-			
+
 	'''
 	USES MOCK
 	Tests to ensure that when addAccount is called,
@@ -206,6 +206,152 @@ class testBank(unittest.TestCase):
 		#Ensure all balances are 0
 		for i in self.b.bankAccounts:
 			self.assertEqual(i.balance,0)
+
+
+	'''
+	USES MOCK
+	Test to ensure integer deposits correctly increase the balance.
+	'''
+	def testIntegerDeposit(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.deposit(10)
+		self.assertEqual(account.balance,20)
+
+
+	'''
+	USES MOCK
+	Test to ensure an exception is raised if you try to deposit a negative value.
+	Try to deposit a negative integer value.
+	'''
+	def testNegativeDeposit(self):
+		account = BankAccount(1)
+		account.balance = 10
+		self.assertRaises(Exception, account.deposit,-10)
+
+
+	'''
+	USES MOCK
+	Test to ensure decimal deposits correctly increase the balance.
+	'''
+	def testDecimalDeposit(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.deposit(0.50)
+		self.assertEqual(account.balance,10.50)
+
+
+	'''
+	USES MOCK
+	Test to ensure very large deposits correctly increase the balance.
+	'''
+	def testLargeDeposit(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.deposit(2147483650)
+		self.assertEqual(account.balance,2147483660)
+
+
+	'''
+	USES MOCK
+	Test to ensure very small deposits correctly increase the balance.
+	'''
+	def testSmallDeposit(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.deposit(0.001)
+		self.assertEqual(account.balance,10.001)
+
+
+	'''
+	USES MOCK
+	Test to ensure integer withdrawals correctly decrease the balance.
+	'''
+	def testIntegerWithdraw(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.withdraw(5)
+		self.assertEqual(account.balance,5)
+
+
+	'''
+	USES MOCK
+	Test to ensure an exception is raised if you try to deposit a negative value.
+	Try to withdraw a negative integer value.
+	'''
+	def testNegativeWithdraw(self):
+		account = BankAccount(1)
+		account.balance = 10
+		self.assertRaises(Exception, account.withdraw,-5)
+
+
+	'''
+	USES MOCK
+	Test to ensure decimal withdrawals correctly decrease the balance.
+	'''
+	def testDecimalWithdraw(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.withdraw(0.50)
+		self.assertEqual(account.balance,9.50)
+
+
+	'''
+	USES MOCK
+	Test to ensure an exception is raised when an overdraft is attempted.
+	Try to overdraft the account by one dollar.
+	'''
+	def testOverdraft(self):
+		account = BankAccount(1)
+		account.balance = 10
+		self.assertRaises(Exception, account.withdraw,11)
+
+
+	'''
+	USES MOCK
+	Test to ensure very small withdrawals correctly decrease the balance.
+	'''
+	def testSmallWithdraw(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.withdraw(0.001)
+		self.assertEqual(account.balance,9.999)
+
+
+	'''
+	USES MOCK
+	Test to ensure getBalance returns the correct balance.
+	'''
+	def testGetBalanceAccuracy(self):
+		account = BankAccount(1)
+		account.balance = 10
+		self.assertEqual(account.getBalance(),10)
+
+
+	'''
+	Test to ensure an exception is raised if you try to access an account using non-numeric characters.
+	Try to get an account using a text string.
+	'''
+	def testNonNumericAccountNumber(self):
+		text = "LetMeIn"
+		self.assertRaises(Exception, self.b.getAccount,text)
+
+
+	'''
+	Test to ensure an exception is raised if you try to access an account using null.
+	Try to get an account by submitting no characters.
+	'''
+	def testNullAccountNumber(self):
+		self.assertRaises(Exception, self.b.getAccount,None)
+
+
+	'''
+	Test to ensure an exception is raised if you try to access an account using rudimentary hacking techniques.
+	Try to get an account by submitting "True".
+	'''
+	def testTrueAccountNumber(self):
+		self.assertRaises(Exception, self.b.getAccount,True)
+
 
 
 if __name__ == '__main__':
