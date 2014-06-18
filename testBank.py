@@ -97,7 +97,7 @@ class testBank(unittest.TestCase):
 			a = self.b.getAccount(1)
 			self.assertEqual(a.balance,10)
 
-
+			
 	'''
 	USES MOCK
 	Tests to ensure that when addAccount is called,
