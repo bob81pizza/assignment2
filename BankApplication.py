@@ -1,6 +1,4 @@
 import datetime
-import unittest
-from unittest.mock import Mock
 
 class Bank():
 
@@ -12,6 +10,7 @@ class Bank():
     def addAccount(self):
         x = BankAccount(self.getNextAccountNumber())
         self.bankAccounts.append(x)
+        self.currentAccountNumber += 1
 
     def removeAccount(self, accountNumber):
         for x in self.bankAccounts:
@@ -19,8 +18,7 @@ class Bank():
                 self.bankAccounts.remove(x)
 
     def getNextAccountNumber(self):
-        self.currentAccountNumber += 1
-        return self.currentAccountNumber
+        return self.currentAccountNumber + 1
 
     def isValidAccountNumber(self, accountNum):
         for i in self.bankAccounts:
@@ -34,12 +32,16 @@ class Bank():
                 if i.getAccountNumber() == accountNum:
                     return i
         else:
-            raise Exception("No Account Found")
-        
+            raise Exception("No Account Found")      
 
     def printAccounts(self):
         for i in self.bankAccounts:
             print("Account number:",i.getAccountNumber(), "Balance:",i.getBalance())
+
+    def emptyAllAccounts(self):
+        for i in self.bankAccounts:
+            if i.getBalance() > 0:
+                i.withdraw(i.getBalance())
 
     
 
@@ -59,26 +61,28 @@ class BankAccount():
         if amount > 0:
             self.balance += amount
             x = Transaction('deposit', amount, datetime.date.today())
-            
+            self.transactions.append(x)
         else:
-            print("Amount must be greater than 0")
             x = Transaction('failed - amount less than 0', amount, datetime.date.today())
-        self.transactions.append(x)
+            self.transactions.append(x)
+            raise Exception('Amount less than 0')
         
 
     def withdraw(self, amount):
         if amount > 0 and self.balance-amount >= 0:
             self.balance -= amount
             x = Transaction('withdrawal', amount, datetime.date.today())
+            self.transactions.append(x)
             
         elif amount > 0 and self.balance - amount < 0:
-            print("You don't have enough money available")
             x = Transaction('failed - not enough money', amount, datetime.date.today())
+            self.transactions.append(x)
+            raise Exception('Not Enough Money')
             
         else:
-            print("The amount must be greater than 0")
             x = Transaction('failed - amount less than 0', amount, datetime.date.today())
-        self.transactions.append(x)
+            self.transactions.append(x)
+            raise Exception('Amount must be greater than 0')
 
 
     def getBalance(self):
