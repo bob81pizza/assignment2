@@ -115,37 +115,4 @@ class Transaction():
         s += str(self.date)
         return s
 
-
-
-# bank = Bank()
-# bank.addAccount()
-# bank.addAccount()
-
-# print(bank.bankAccounts[0].getAccountNumber())
-# print(bank.getAccount(1))
-# print(bank.getAccount(1))
-# print(bank.isValidAccountNumber(5))
-# b = bank.getAccount(5)
-# print(b)
-# b.deposit(10)
-# bank.bankAccounts[0].deposit(10)
-# bank.bankAccounts[0].getBalance()
-
-# print(bank.bankAccounts)
-
-# bank.printAccounts()
-
-
-# b.deposit(10)
-# b.deposit(20)
-# b.deposit(-10)
-# b.withdraw(10)
-# b.withdraw(-2)
-# print(b.printTransactions())
-
-
-# print('Next account number:',bank.getNextAccountNumber())
-# print('All bank accounts:', bank.bankAccounts)
-# bank.printAccounts()
-                
         

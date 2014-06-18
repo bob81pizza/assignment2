@@ -353,6 +353,54 @@ class testBank(unittest.TestCase):
 		self.assertRaises(Exception, self.b.getAccount,True)
 
 
+	'''
+	Test to ensure that the BankAccount's list of Transactions has 1 element when a deposit is made
+	'''
+	def testDepositTransaction(self):
+		account = BankAccount(1)
+		account.deposit(10)
+		self.assertEqual(len(account.transactions),1)
+
+
+	'''
+	Test to ensure that the BankAccount's list of Transactions contains 1 element when a withdrawal is made
+	Add money, withdraw some, then check lengthe of transaction list
+	'''
+	def testWithdrawalTransaction(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.withdraw(5)
+		self.assertEqual(len(account.transactions),1)
+
+
+	'''
+	Test to ensure the type of element in the transaction list is of the class Transaction for a deposit
+	'''
+	def testDepositTransactionType(self):
+		account = BankAccount(1)
+		account.deposit(10)
+		self.assertIsInstance(account.transactions[0],Transaction)
+
+
+	'''
+	Test to ensure the type of element in the transaction list is the class Transaction for a withdrawal
+	'''
+	def testWithdrawalTransactionType(self):
+		account = BankAccount(1)
+		account.balance = 10
+		account.withdraw(5)
+		self.assertIsInstance(account.transactions[0],Transaction)
+
+
+	'''
+	Test to ensure a transaction is created even when there is an Exception thrown.
+	Try to withdraw more money than the balance, then check the transaction list
+	'''
+	def testExceptionTransaction(self):
+		account = BankAccount(1)
+		self.assertRaises(Exception, account.withdraw,11)
+		self.assertIsInstance(account.transactions[0],Transaction)
+
 
 if __name__ == '__main__':
 	unittest.main(verbosity=2)
